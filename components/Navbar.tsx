@@ -1,23 +1,42 @@
-"use client"; // Dòng này báo cho Next.js biết Component này có tương tác (click chuột, state)
+"use client";
 
-import { useState } from "react";
-import Link from "next/link"; // Trong Next.js, luôn dùng <Link> thay cho thẻ <a> để chuyển trang mượt hơn
+import { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function Navbar() {
-  // Biến isMenuOpen để nhớ xem menu điện thoại đang Mở (true) hay Đóng (false)
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [theme, setTheme] = useState("light");
 
-  // Hàm đảo ngược trạng thái (Đóng thành Mở, Mở thành Đóng)
+  // Kiểm tra Theme đã lưu khi trang vừa load
+  useEffect(() => {
+    const currentTheme = localStorage.getItem("theme") || "light";
+    if (currentTheme === "dark") {
+      document.body.setAttribute("data-theme", "dark");
+      setTheme("dark");
+    }
+  }, []);
+
+  // Hàm chuyển đổi Theme Sáng/Tối
+  const toggleTheme = () => {
+    if (theme === "light") {
+      document.body.setAttribute("data-theme", "dark");
+      localStorage.setItem("theme", "dark");
+      setTheme("dark");
+    } else {
+      document.body.removeAttribute("data-theme");
+      localStorage.setItem("theme", "light");
+      setTheme("light");
+    }
+  };
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   return (
-    // Chú ý: Trong React, thuộc tính 'class' của HTML phải đổi tên thành 'className'
     <nav className="navbar">
       <div className="logo">EricN2907</div>
       
-      {/* Nếu isMenuOpen = true thì nhét thêm chữ "active" vào class, nếu không thì để trống */}
       <ul className={`nav-links ${isMenuOpen ? "active" : ""}`}>
         <li><Link href="#about" onClick={() => setIsMenuOpen(false)}>About</Link></li>
         <li><Link href="#tech-stack" onClick={() => setIsMenuOpen(false)}>Tech Stack</Link></li>
@@ -26,15 +45,16 @@ export default function Navbar() {
       </ul>
       
       <div className="nav-actions">
-        <button className="theme-toggle-btn">
-          <i className="fa-solid fa-moon"></i>
+        {/* Nút bấm Theme */}
+        <button className="theme-toggle-btn" onClick={toggleTheme} aria-label="Toggle Theme">
+          <i className={`fa-solid ${theme === "dark" ? "fa-sun" : "fa-moon"}`}></i>
         </button>
+        
         <a href="https://github.com/EricN2907/my-portfolio" target="_blank" className="nav-btn">
           Github
         </a>
         
-        {/* Nút Hamburger gọi hàm toggleMenu khi bị click */}
-        <button className="hamburger" onClick={toggleMenu}>
+        <button className="hamburger" onClick={toggleMenu} aria-label="Toggle Menu">
           <i className={`fa-solid ${isMenuOpen ? "fa-xmark" : "fa-bars"}`}></i>
         </button>
       </div>

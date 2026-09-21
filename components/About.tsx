@@ -23,7 +23,7 @@ export default function About() {
         <div className="quotes-grid">
           <div className="quote-card primary-quote">
             <i className="fa-solid fa-quote-left quote-icon"></i>
-            <p className="bio-text">"Cuộc sống không phải lúc nào cũng màu hồng, muốn thấy cầu vồng phải chấp nhận những cơn mưa."</p>
+            <p className="bio-text">&quot;Cuộc sống không phải lúc nào cũng màu hồng, muốn thấy cầu vồng phải chấp nhận những cơn mưa.&quot;</p>
           </div>
           <div className="quote-card secondary-quote">
             <i className="fa-solid fa-bolt quote-icon-small"></i>
