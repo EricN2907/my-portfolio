@@ -1,35 +1,31 @@
-"use client"; // Có tương tác chuột nên phải có dòng này
+"use client";
 
 import { useEffect, useRef } from "react";
 
 export default function BackgroundBlob() {
-  // Dùng useRef thay cho document.getElementById
   const blobRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Hàm này sẽ chạy mỗi khi bạn di chuột
     const handlePointerMove = (e: PointerEvent) => {
+      // Cách tối ưu nhất cho React: Gắn thẳng style thay vì gọi hàm animate() liên tục
       if (blobRef.current) {
-        blobRef.current.animate(
-          {
-            left: `${e.clientX}px`,
-            top: `${e.clientY}px`,
-          },
-          { duration: 3000, fill: "forwards" }
-        );
+        blobRef.current.style.left = `${e.clientX}px`;
+        blobRef.current.style.top = `${e.clientY}px`;
       }
     };
 
-    // Lắng nghe sự kiện chuột trên toàn bộ window
     window.addEventListener("pointermove", handlePointerMove);
     
-    // Dọn dẹp sự kiện khi người dùng sang trang khác (Best practice của React)
     return () => window.removeEventListener("pointermove", handlePointerMove);
-  }, []); // Cặp ngoặc vuông rỗng nghĩa là Hook này chỉ chạy 1 lần lúc web vừa load
+  }, []);
 
   return (
     <>
-      <div className="blob-glow" ref={blobRef}></div>
+      <div 
+        className="blob-glow" 
+        ref={blobRef}
+        style={{ transition: "all 3s cubic-bezier(0.075, 0.82, 0.165, 1)" }} 
+      ></div>
       <div className="blur-overlay"></div>
     </>
   );
