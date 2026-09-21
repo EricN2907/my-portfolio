@@ -21,11 +21,7 @@ export default function Hero() {
       </h1>
 
       <div className="mega-bottom">
-        {/* Chú ý: Thẻ br phải là <br /> */}
-        <span className="mega-role">IT DEVELOPER<br />& DESIGNER</span>
-        <span className="mega-desc">
-          Tạo ra các giải pháp phần mềm hiện đại, tối ưu hiệu năng và mang lại trải nghiệm người dùng xuất sắc.
-        </span>
+        <span className="mega-role">IT DEVELOPER</span>
       </div>
     </section>
   );
