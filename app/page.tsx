@@ -1,15 +1,18 @@
 import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import BackgroundBlob from "@/components/BackgroundBlob";
 
 export default function Home() {
   return (
     <main>
-      <Navbar />
+      {/* Cục nền chạy theo chuột đặt trên cùng */}
+      <BackgroundBlob />
       
-      <div style={{ height: "2000px", padding: "100px" }}>
-        {/* Div này mình tạo tạm để làm dài trang web ra, cho bạn cuộn thử xem Navbar có nổi (floating) như cũ không thôi */}
-        <h1>Website Portfolio Next.js của EricN2907</h1>
-        <p>Bên dưới sẽ là các phần Hero, Projects... mình làm sau nhé.</p>
-      </div>
+      <Navbar />
+      <Hero />
+      
+      {/* Vẫn giữ div tạm này để cuộn màn hình nhé */}
+      <div style={{ height: "1500px" }}></div>
     </main>
   );
 }
