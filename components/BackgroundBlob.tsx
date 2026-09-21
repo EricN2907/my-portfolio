@@ -24,7 +24,7 @@ export default function BackgroundBlob() {
       <div 
         className="blob-glow" 
         ref={blobRef}
-        style={{ transition: "all 3s cubic-bezier(0.075, 0.82, 0.165, 1)" }} 
+        style={{ transition: "left 0.2s ease-out, top 0.2s ease-out" }} 
       ></div>
       <div className="blur-overlay"></div>
     </>
