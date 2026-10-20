@@ -19,9 +19,9 @@ export default function Contact() {
         <span className="section-badge">
           <i className="fa-solid fa-comments"></i> Get In Touch
         </span>
-        <h2 className="section-title">Let&apos;s Work Together</h2>
+        <h2 className="section-title">Get In Touch</h2>
         <p className="section-subtitle">
-          Bạn có dự án cần phát triển hoặc muốn trao đổi cơ hội hợp tác? Đừng ngần ngại liên hệ với mình!
+          Sẵn sàng kết nối, chia sẻ kinh nghiệm và đón nhận cơ hội gia nhập đội ngũ kỹ thuật phát triển.
         </p>
       </div>
 

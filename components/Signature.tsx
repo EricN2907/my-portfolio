@@ -11,35 +11,33 @@ interface SignatureProps {
 }
 
 export default function Signature({
-  name = "EricNem",
+  name = "Nguyen Hoang Nam",
   className = "",
   allowCustomDraw = true,
 }: SignatureProps) {
-  // Mode: "font" (May-WinD font), "paper" (extracted paper scan), "custom" (canvas drawn)
-  const [sigMode, setSigMode] = useState<"font" | "paper" | "custom">("font");
-  const [displayName, setDisplayName] = useState(name);
+  // Default mode is "paper" (the authentic handwritten signature from the user's photo)
+  const [sigMode, setSigMode] = useState<"paper" | "font" | "custom">("paper");
   const [customSig, setCustomSig] = useState<string | null>(null);
   const [isPadOpen, setIsPadOpen] = useState(false);
 
   useEffect(() => {
-    // Check if user previously chose a custom drawing or mode
     const savedCustom = localStorage.getItem("user_custom_signature");
     if (savedCustom) {
       setCustomSig(savedCustom);
     }
 
-    const savedMode = localStorage.getItem("user_sig_mode") as "font" | "paper" | "custom" | null;
-    if (savedMode === "paper") {
-      setSigMode("paper");
-    } else if (savedMode === "custom" && savedCustom) {
+    const savedMode = localStorage.getItem("user_sig_mode") as "paper" | "font" | "custom" | null;
+    if (savedMode === "custom" && savedCustom) {
       setSigMode("custom");
-    } else {
-      // Default is always the authentic May-WinD font
+    } else if (savedMode === "font") {
       setSigMode("font");
+    } else {
+      // Default is always the user's authentic handwritten signature from paper photo
+      setSigMode("paper");
     }
   }, []);
 
-  const handleSelectMode = (mode: "font" | "paper" | "custom") => {
+  const handleSelectMode = (mode: "paper" | "font" | "custom") => {
     setSigMode(mode);
     localStorage.setItem("user_sig_mode", mode);
   };
@@ -51,24 +49,11 @@ export default function Signature({
     localStorage.setItem("user_sig_mode", "custom");
   };
 
-  const toggleFontName = () => {
-    setDisplayName((prev) => (prev === "EricNem" ? "Nguyen Hoang Nam" : "EricNem"));
-  };
-
   return (
     <div className={`clean-signature-container ${className}`}>
-      {/* 1. FONT DISPLAY (Authentic May-WinD Thesignature Font) */}
-      {sigMode === "font" && (
-        <div className="signature-font-display" title={`Chữ ký font May-WinD: ${displayName}`}>
-          <span className="signature-script-maywind">
-            {displayName}
-          </span>
-        </div>
-      )}
-
-      {/* 2. PAPER SIGNATURE (Left circle removed, authentic paper stroke) */}
+      {/* 1. OFFICIAL HANDWRITTEN SIGNATURE (From User's Paper Photo, Left Circle Removed) */}
       {sigMode === "paper" && (
-        <div className="real-signature-wrapper" title="Chữ ký giấy gốc: EricNem (Nguyễn Hoàng Nam)">
+        <div className="real-signature-wrapper" title="Chữ ký viết tay thật của bạn">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/signature_nam_blue.png"
@@ -81,6 +66,15 @@ export default function Signature({
             alt="Chữ ký Nguyễn Hoàng Nam"
             className="real-handwritten-img sig-dark"
           />
+        </div>
+      )}
+
+      {/* 2. THE SIGNATURE FONT DISPLAY (Alternative Option) */}
+      {sigMode === "font" && (
+        <div className="signature-font-display" title={`Chữ ký font: ${name}`}>
+          <span className="signature-script-maywind">
+            {name}
+          </span>
         </div>
       )}
 
@@ -99,39 +93,15 @@ export default function Signature({
       {/* Interactive Switcher Options */}
       {allowCustomDraw && (
         <div className="signature-tool-actions">
-          {/* Button: Font Thesignature from May-WinD */}
-          <button
-            type="button"
-            className={`signature-pill-btn ${sigMode === "font" ? "active" : ""}`}
-            onClick={() => handleSelectMode("font")}
-            title="Dùng font Thesignature chuẩn từ May-WinD"
-          >
-            <i className="fa-solid fa-wand-magic-sparkles"></i>
-            <span>Font May-WinD ({displayName})</span>
-          </button>
-
-          {/* Toggle between EricNem and Nguyen Hoang Nam */}
-          {sigMode === "font" && (
-            <button
-              type="button"
-              className="signature-pill-sub-btn"
-              onClick={toggleFontName}
-              title="Đổi chữ hiển thị giữa EricNem và Nguyen Hoang Nam"
-            >
-              <i className="fa-solid fa-arrows-rotate"></i>
-              <span>{displayName === "EricNem" ? "Hiện Họ Tên" : "Hiện EricNem"}</span>
-            </button>
-          )}
-
-          {/* Button: Scanned Paper Signature */}
+          {/* Button: Official Hand-drawn Signature from paper photo */}
           <button
             type="button"
             className={`signature-pill-btn ${sigMode === "paper" ? "active" : ""}`}
             onClick={() => handleSelectMode("paper")}
-            title="Dùng nét ký giấy gốc (đã bỏ vòng tròn bên trái)"
+            title="Dùng nét ký giấy gốc của bạn (chữ trong hình bạn gửi)"
           >
             <i className="fa-solid fa-signature"></i>
-            <span>Nét ký giấy gốc</span>
+            <span>Chữ ký tay gốc (trong hình)</span>
           </button>
 
           {/* Button: Canvas Pad */}
@@ -142,7 +112,18 @@ export default function Signature({
             title="Mở bảng vẽ tự ký nét tay mới"
           >
             <i className="fa-solid fa-pen-nib"></i>
-            <span>{customSig ? "Vẽ lại nét mới" : "Tự vẽ chữ ký"}</span>
+            <span>{customSig ? "Vẽ lại nét mới" : "Tự vẽ nét khác"}</span>
+          </button>
+
+          {/* Button: Font May-WinD */}
+          <button
+            type="button"
+            className={`signature-pill-btn ${sigMode === "font" ? "active" : ""}`}
+            onClick={() => handleSelectMode("font")}
+            title="Xem thử font chữ Thesignature"
+          >
+            <i className="fa-solid fa-wand-magic-sparkles"></i>
+            <span>Font Thesignature</span>
           </button>
         </div>
       )}

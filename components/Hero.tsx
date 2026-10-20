@@ -49,10 +49,6 @@ export default function Hero() {
     <section className="mega-typo reveal-on-scroll">
       {/* Top Status & Weather Badges */}
       <div className="hero-top-badges">
-        <div className="hero-status-pill">
-          <span className="status-dot"></span>
-          <span className="status-text">Open for Projects & Opportunities</span>
-        </div>
         <WeatherWidget variant="pill" />
       </div>
 

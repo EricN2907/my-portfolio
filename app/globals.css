@@ -3134,22 +3134,44 @@ body {
   position: fixed;
   top: 90px;
   right: 6%;
-  width: 120px;
-  height: 120px;
+  width: 90px;
+  height: 90px;
   pointer-events: none;
-  z-index: 40; /* Clearly visible above all sections while clicks pass through */
+  z-index: 35;
   opacity: 0;
   visibility: hidden;
   transform: scale(0.85);
-  transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s ease;
-  filter: drop-shadow(0 0 25px rgba(0, 198, 255, 0.45));
+  transition: opacity 1.5s ease, transform 1.5s ease, visibility 1.5s ease;
 }
 
 [data-theme="dark"] .sky-moon-element {
-  opacity: 1 !important;
+  opacity: 0.98 !important;
   visibility: visible !important;
   transform: scale(1);
-  animation: moonFloat 6s ease-in-out infinite alternate;
+}
+
+.moon-body {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  box-shadow: 18px 10px 0 0 #f4f6fc;
+  filter: drop-shadow(0 0 25px rgba(230, 240, 255, 0.85)) drop-shadow(0 0 50px rgba(112, 181, 255, 0.5));
+}
+
+.moon-glow {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200, 225, 255, 0.4) 0%, transparent 70%);
+  animation: moonGlowPulse 5s ease-in-out infinite alternate;
+}
+
+@keyframes moonGlowPulse {
+  0% { opacity: 0.6; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1.15); }
 }
 
 @keyframes moonFloat {
@@ -3279,6 +3301,10 @@ body {
   height: auto;
   display: block;
   user-select: none;
+  animation: signatureLoop 7.2s ease-in-out infinite !important;
+  will-change: clip-path, opacity;
+  clip-path: inset(0 100% 0 0);
+  -webkit-clip-path: inset(0 100% 0 0);
   transition: filter 0.3s ease;
 }
 
@@ -3378,4 +3404,181 @@ body {
 [data-theme="dark"] .signature-pill-sub-btn {
   border-color: rgba(0, 198, 255, 0.4);
   color: #00C6FF;
+}
+
+
+/* ========================================================
+   AUTUMN FALLING LEAVES (LIGHT MODE BACKGROUND)
+   ======================================================== */
+.autumn-leaves-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+[data-theme="dark"] .autumn-leaves-container {
+  opacity: 0 !important;
+  display: none !important;
+}
+
+.autumn-leaf-item {
+  position: absolute;
+  top: -50px;
+  width: 26px;
+  height: 26px;
+  pointer-events: none;
+  animation: autumnLeafFall linear infinite;
+  filter: drop-shadow(0 3px 8px rgba(180, 83, 9, 0.28));
+  will-change: transform;
+}
+
+.autumn-leaf-item .leaf-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.leaf-gold {
+  color: #F59E0B;
+}
+
+.leaf-maple {
+  color: #EA580C;
+}
+
+.leaf-bronze {
+  color: #D97706;
+}
+
+.leaf-amber {
+  color: #F97316;
+}
+
+@keyframes autumnLeafFall {
+  0% {
+    top: -50px;
+    transform: translateX(0) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.9;
+  }
+  30% {
+    transform: translateX(50px) rotate(110deg) scale(1);
+  }
+  55% {
+    transform: translateX(-40px) rotate(220deg) scale(0.9);
+  }
+  80% {
+    transform: translateX(45px) rotate(320deg) scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    top: 106vh;
+    transform: translateX(-20px) rotate(420deg) scale(0.8);
+    opacity: 0;
+  }
+}
+
+
+/* Stats Card High Contrast & Readability */
+.stats-container {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1.5px solid rgba(0, 114, 255, 0.16) !important;
+  box-shadow: 0 16px 40px rgba(0, 114, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .stats-container {
+  background: rgba(18, 20, 26, 0.88) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55), 0 0 25px rgba(0, 198, 255, 0.06) !important;
+}
+
+.stat-label {
+  font-size: 1.02rem !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  margin-bottom: 5px !important;
+}
+
+[data-theme="dark"] .stat-label {
+  color: #ffffff !important;
+}
+
+.stat-desc {
+  font-size: 0.84rem !important;
+  color: #475569 !important;
+  line-height: 1.45 !important;
+}
+
+[data-theme="dark"] .stat-desc {
+  color: #cbd5e1 !important;
+}
+
+
+/* Contact Form High Contrast Inputs */
+.input-group label {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 7px;
+}
+
+[data-theme="dark"] .input-group label {
+  color: #f1f5f9;
+}
+
+.input-group input,
+.input-group textarea {
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 14px;
+  border: 1.5px solid #cbd5e1 !important;
+  background: #ffffff !important;
+  font-family: inherit;
+  font-size: 0.98rem;
+  color: #0f172a !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s ease;
+  resize: vertical;
+}
+
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+  color: #64748b !important;
+  opacity: 1 !important;
+  font-weight: 400;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+  outline: none;
+  border-color: #0072FF !important;
+  box-shadow: 0 0 0 3.5px rgba(0, 114, 255, 0.22) !important;
+}
+
+[data-theme="dark"] .input-group input,
+[data-theme="dark"] .input-group textarea {
+  background: rgba(20, 22, 28, 0.92) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .input-group input::placeholder,
+[data-theme="dark"] .input-group textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .input-group input:focus,
+[data-theme="dark"] .input-group textarea:focus {
+  border-color: #00C6FF !important;
+  box-shadow: 0 0 0 3.5px rgba(0, 198, 255, 0.3) !important;
 }

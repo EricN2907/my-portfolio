@@ -19,61 +19,25 @@ export default function BackgroundBlob() {
 
   return (
     <>
-      {/* Celestial Glowing Moon in Dark Mode */}
-      <div className="sky-moon-element" aria-hidden="true">
-        <svg
-          viewBox="0 0 100 100"
-          className="moon-svg"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#cce5ff" stopOpacity="0.85" />
-              <stop offset="45%" stopColor="#70b5ff" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#0072ff" stopOpacity="0" />
-            </radialGradient>
-            <linearGradient id="moonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="50%" stopColor="#e2f0ff" />
-              <stop offset="100%" stopColor="#a3d0ff" />
-            </linearGradient>
-            <filter id="moonShadow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-
-          {/* Atmospheric Halo */}
-          <circle cx="50" cy="50" r="48" fill="url(#moonGlow)" />
-
-          {/* Crescent Moon Body */}
-          <path
-            d="M 68 14 A 40 40 0 1 0 68 86 A 32 32 0 0 1 68 14 Z"
-            fill="url(#moonGradient)"
-            filter="url(#moonShadow)"
-          />
-
-          {/* Subtle Lunar Surface Craters */}
-          <circle cx="40" cy="38" r="3.5" fill="#75aadb" opacity="0.35" />
-          <circle cx="32" cy="52" r="5" fill="#75aadb" opacity="0.3" />
-          <circle cx="48" cy="65" r="3" fill="#75aadb" opacity="0.35" />
-          <circle cx="28" cy="36" r="2.5" fill="#75aadb" opacity="0.25" />
-        </svg>
+      {/* ========================================================
+          1. DARK MODE: CELESTIAL MOON & NIGHT SKY (FROM MAY-WIND)
+          ======================================================== */}
+      {/* Celestial Moon identical to May-WinD: Crescent body with glowing atmospheric halo */}
+      <div id="skyMoonElement" className="sky-moon-element" aria-hidden="true">
+        <div className="moon-body"></div>
+        <div className="moon-glow"></div>
       </div>
 
       {/* Atmospheric Night Stars */}
       <div className="sky-stars-container" aria-hidden="true">
-        {[...Array(24)].map((_, i) => (
+        {[...Array(28)].map((_, i) => (
           <div
             key={i}
             className="twinkle-star"
             style={{
-              top: `${(i * 17) % 95}%`,
+              top: `${(i * 17 + 3) % 95}%`,
               left: `${(i * 23 + 7) % 96}%`,
-              animationDelay: `${(i * 0.4) % 3.5}s`,
+              animationDelay: `${(i * 0.35) % 3.5}s`,
               transform: `scale(${0.6 + ((i * 3) % 5) * 0.15})`,
             }}
           />
@@ -87,6 +51,54 @@ export default function BackgroundBlob() {
         <div className="shooting-star star-3" />
       </div>
 
+      {/* ========================================================
+          2. LIGHT MODE: GOLDEN AUTUMN FALLING LEAVES (LÁ THU RƠI)
+          ======================================================== */}
+      <div className="autumn-leaves-container" aria-hidden="true">
+        {[...Array(16)].map((_, i) => {
+          const leafTypes = ["gold", "maple", "bronze", "amber"];
+          const type = leafTypes[i % leafTypes.length];
+          const leftPos = (i * 6.3 + 2) % 96;
+          const delay = (i * 1.4) % 12;
+          const duration = 11 + ((i * 3.1) % 9);
+          const scale = 0.7 + ((i * 2) % 4) * 0.15;
+
+          return (
+            <div
+              key={i}
+              className={`autumn-leaf-item leaf-${type}`}
+              style={{
+                left: `${leftPos}%`,
+                animationDelay: `${delay}s`,
+                animationDuration: `${duration}s`,
+                transform: `scale(${scale})`,
+              }}
+            >
+              <svg
+                viewBox="0 0 32 32"
+                className="leaf-svg"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16 2 C24 8, 28 19, 16 30 C4 19, 8 8, 16 2 Z"
+                  fill="currentColor"
+                  opacity="0.88"
+                />
+                <path
+                  d="M16 2 L16 30 M16 11 L22 15 M16 17 L24 21 M16 13 L10 17 M16 19 L8 23"
+                  stroke="rgba(255, 255, 255, 0.45)"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ========================================================
+          3. INTERACTIVE MOUSE CURSOR GLOW & BLUR OVERLAY
+          ======================================================== */}
       <div
         className="blob-glow"
         ref={blobRef}
