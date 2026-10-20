@@ -8,7 +8,10 @@ export default function Footer() {
       <div className="footer-container">
         <div className="footer-left">
           <div className="footer-brand">
-            <span className="logo">EricNem</span>
+            <span className="brand-logo footer-logo">
+              <span className="brand-first">Eric</span>
+              <span className="brand-last">Nem</span>
+            </span>
             <p className="footer-tagline">
               Xây dựng kiến trúc hệ thống vững chắc, hiệu suất tối đa và mở rộng linh hoạt cho tương lai.
             </p>

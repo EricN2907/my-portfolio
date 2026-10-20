@@ -15,8 +15,8 @@ export default function Signature({
   className = "",
   allowCustomDraw = true,
 }: SignatureProps) {
-  // Default mode is "paper" (the authentic handwritten signature from the user's photo)
-  const [sigMode, setSigMode] = useState<"paper" | "font" | "custom">("paper");
+  // Modes: "full" (authentic signature from paper photo with monogram), "trimmed" (without circle), "font", "custom"
+  const [sigMode, setSigMode] = useState<"full" | "trimmed" | "font" | "custom">("full");
   const [customSig, setCustomSig] = useState<string | null>(null);
   const [isPadOpen, setIsPadOpen] = useState(false);
 
@@ -26,18 +26,20 @@ export default function Signature({
       setCustomSig(savedCustom);
     }
 
-    const savedMode = localStorage.getItem("user_sig_mode") as "paper" | "font" | "custom" | null;
+    const savedMode = localStorage.getItem("user_sig_mode") as "full" | "trimmed" | "font" | "custom" | "paper" | null;
     if (savedMode === "custom" && savedCustom) {
       setSigMode("custom");
     } else if (savedMode === "font") {
       setSigMode("font");
+    } else if (savedMode === "trimmed") {
+      setSigMode("trimmed");
     } else {
-      // Default is always the user's authentic handwritten signature from paper photo
-      setSigMode("paper");
+      // Default is always full authentic handwritten signature
+      setSigMode("full");
     }
   }, []);
 
-  const handleSelectMode = (mode: "paper" | "font" | "custom") => {
+  const handleSelectMode = (mode: "full" | "trimmed" | "font" | "custom") => {
     setSigMode(mode);
     localStorage.setItem("user_sig_mode", mode);
   };
@@ -51,25 +53,43 @@ export default function Signature({
 
   return (
     <div className={`clean-signature-container ${className}`}>
-      {/* 1. OFFICIAL HANDWRITTEN SIGNATURE (From User's Paper Photo, Left Circle Removed) */}
-      {sigMode === "paper" && (
-        <div className="real-signature-wrapper" title="Chữ ký viết tay thật của bạn">
+      {/* 1. AUTHENTIC HANDWRITTEN SIGNATURE (FULL - INCLUDING MONOGRAM CIRCLE) */}
+      {sigMode === "full" && (
+        <div className="real-signature-wrapper" title="Chữ ký giấy gốc nguyên vẹn của bạn">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/signature_nam_blue.png"
-            alt="Chữ ký Nguyễn Hoàng Nam"
+            src="/signature_nam_full_blue.png"
+            alt="Chữ ký Nguyễn Hoàng Nam đầy đủ"
             className="real-handwritten-img sig-light"
           />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/signature_nam_white.png"
-            alt="Chữ ký Nguyễn Hoàng Nam"
+            src="/signature_nam_full_white.png"
+            alt="Chữ ký Nguyễn Hoàng Nam đầy đủ"
             className="real-handwritten-img sig-dark"
           />
         </div>
       )}
 
-      {/* 2. THE SIGNATURE FONT DISPLAY (Alternative Option) */}
+      {/* 2. AUTHENTIC HANDWRITTEN SIGNATURE (TRIMMED - WITHOUT MONOGRAM CIRCLE) */}
+      {sigMode === "trimmed" && (
+        <div className="real-signature-wrapper" title="Chữ ký giấy gốc (lược bỏ vòng tròn bên trái)">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/signature_nam_trimmed_blue.png"
+            alt="Chữ ký Nguyễn Hoàng Nam nét lượn"
+            className="real-handwritten-img sig-light"
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/signature_nam_trimmed_white.png"
+            alt="Chữ ký Nguyễn Hoàng Nam nét lượn"
+            className="real-handwritten-img sig-dark"
+          />
+        </div>
+      )}
+
+      {/* 3. THE SIGNATURE FONT DISPLAY (Alternative Option) */}
       {sigMode === "font" && (
         <div className="signature-font-display" title={`Chữ ký font: ${name}`}>
           <span className="signature-script-maywind">
@@ -78,7 +98,7 @@ export default function Signature({
         </div>
       )}
 
-      {/* 3. CUSTOM CANVAS DRAWN SIGNATURE */}
+      {/* 4. CUSTOM CANVAS DRAWN SIGNATURE */}
       {sigMode === "custom" && customSig && (
         <div className="custom-drawn-sig-box" title="Chữ ký tự vẽ trên bảng">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -93,15 +113,26 @@ export default function Signature({
       {/* Interactive Switcher Options */}
       {allowCustomDraw && (
         <div className="signature-tool-actions">
-          {/* Button: Official Hand-drawn Signature from paper photo */}
+          {/* Button: Full Authentic */}
           <button
             type="button"
-            className={`signature-pill-btn ${sigMode === "paper" ? "active" : ""}`}
-            onClick={() => handleSelectMode("paper")}
-            title="Dùng nét ký giấy gốc của bạn (chữ trong hình bạn gửi)"
+            className={`signature-pill-btn ${sigMode === "full" ? "active" : ""}`}
+            onClick={() => handleSelectMode("full")}
+            title="Chữ ký nguyên vẹn đầy đủ nét trong hình sổ tay của bạn"
           >
             <i className="fa-solid fa-signature"></i>
-            <span>Chữ ký tay gốc (trong hình)</span>
+            <span>Chữ ký gốc đầy đủ</span>
+          </button>
+
+          {/* Button: Trimmed (without circle) */}
+          <button
+            type="button"
+            className={`signature-pill-btn ${sigMode === "trimmed" ? "active" : ""}`}
+            onClick={() => handleSelectMode("trimmed")}
+            title="Chữ ký nét lượn (bỏ vòng tròn bên trái)"
+          >
+            <i className="fa-solid fa-pen-fancy"></i>
+            <span>Nét ký không vòng</span>
           </button>
 
           {/* Button: Canvas Pad */}

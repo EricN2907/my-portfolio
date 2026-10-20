@@ -51,9 +51,81 @@ export default function BackgroundBlob() {
         <div className="shooting-star star-3" />
       </div>
 
+      {/* Dynamic Cosmic Aurora Borealis Glow Waves in Dark Mode */}
+      <div className="cosmic-aurora-glow" aria-hidden="true">
+        <div className="aurora-ribbon ribbon-1" />
+        <div className="aurora-ribbon ribbon-2" />
+      </div>
+
+      {/* Atmospheric Night Clouds Drifting Across Dark Sky */}
+      <div className="night-clouds-layer" aria-hidden="true">
+        <div className="night-cloud cloud-1" />
+        <div className="night-cloud cloud-2" />
+      </div>
+
       {/* ========================================================
-          2. LIGHT MODE: GOLDEN AUTUMN FALLING LEAVES (LÁ THU RƠI)
+          2. LIGHT MODE: GOLDEN AUTUMN FALLING LEAVES & TREES
           ======================================================== */}
+      {/* Artistic Autumn Botanical Trees & Foliage Silhouette Branches */}
+      <div className="autumn-trees-container" aria-hidden="true">
+        {/* Top-Right Graceful Tree Branch */}
+        <div className="autumn-tree-branch branch-top-right">
+          <svg viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M360 0 C310 30 260 55 210 70 C160 85 110 110 60 160 C30 190 10 215 0 220"
+              stroke="rgba(180, 83, 9, 0.42)"
+              strokeWidth="9"
+              strokeLinecap="round"
+            />
+            <path
+              d="M260 55 C220 30 180 20 140 18"
+              stroke="rgba(180, 83, 9, 0.38)"
+              strokeWidth="5.5"
+              strokeLinecap="round"
+            />
+            <path
+              d="M210 70 C190 110 170 140 130 165"
+              stroke="rgba(180, 83, 9, 0.35)"
+              strokeWidth="4"
+              strokeLinecap="round"
+            />
+            <circle cx="140" cy="18" r="16" fill="rgba(245, 158, 11, 0.45)" />
+            <circle cx="120" cy="14" r="13" fill="rgba(217, 119, 6, 0.5)" />
+            <circle cx="95" cy="10" r="14" fill="rgba(234, 88, 12, 0.45)" />
+            <circle cx="70" cy="12" r="12" fill="rgba(245, 158, 11, 0.4)" />
+            <circle cx="180" cy="22" r="15" fill="rgba(217, 119, 6, 0.4)" />
+            <circle cx="210" cy="70" r="18" fill="rgba(245, 158, 11, 0.45)" />
+            <circle cx="165" cy="125" r="15" fill="rgba(234, 88, 12, 0.45)" />
+            <circle cx="130" cy="165" r="16" fill="rgba(217, 119, 6, 0.42)" />
+            <circle cx="90" cy="185" r="14" fill="rgba(245, 158, 11, 0.45)" />
+            <circle cx="60" cy="160" r="16" fill="rgba(234, 88, 12, 0.42)" />
+            <circle cx="25" cy="210" r="12" fill="rgba(245, 158, 11, 0.38)" />
+          </svg>
+        </div>
+
+        {/* Top-Left Gentle Tree Branch */}
+        <div className="autumn-tree-branch branch-top-left">
+          <svg viewBox="0 0 320 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M0 0 C40 35 90 60 140 75 C190 90 230 120 280 170"
+              stroke="rgba(180, 83, 9, 0.36)"
+              strokeWidth="7"
+              strokeLinecap="round"
+            />
+            <path
+              d="M90 60 C130 35 170 25 210 22"
+              stroke="rgba(180, 83, 9, 0.3)"
+              strokeWidth="4"
+              strokeLinecap="round"
+            />
+            <circle cx="140" cy="75" r="15" fill="rgba(245, 158, 11, 0.42)" />
+            <circle cx="175" cy="25" r="14" fill="rgba(234, 88, 12, 0.4)" />
+            <circle cx="210" cy="22" r="13" fill="rgba(217, 119, 6, 0.38)" />
+            <circle cx="230" cy="120" r="16" fill="rgba(245, 158, 11, 0.42)" />
+            <circle cx="275" cy="165" r="14" fill="rgba(217, 119, 6, 0.4)" />
+          </svg>
+        </div>
+      </div>
       <div className="autumn-leaves-container" aria-hidden="true">
         {[...Array(16)].map((_, i) => {
           const leafTypes = ["gold", "maple", "bronze", "amber"];

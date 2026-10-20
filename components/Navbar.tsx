@@ -51,8 +51,9 @@ export default function Navbar() {
   return (
     <header className={`navbar-header-sticky ${isScrolled ? "scrolled" : ""}`}>
       <nav className="navbar">
-        <Link href="/" className="logo" onClick={closeMenu}>
-          EricNem
+        <Link href="/" className="brand-logo" onClick={closeMenu}>
+          <span className="brand-first">Eric</span>
+          <span className="brand-last">Nem</span>
         </Link>
 
         <ul className={`nav-links ${isMenuOpen ? "active" : ""}`}>
