@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import TiltCard from "./TiltCard";
+import WeatherWidget from "./WeatherWidget";
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
@@ -71,6 +72,9 @@ export default function Contact() {
               <div className="info-content">
                 <h4>Location</h4>
                 <p>Ho Chi Minh City, Vietnam</p>
+                <div style={{ marginTop: "6px" }}>
+                  <WeatherWidget variant="compact" />
+                </div>
               </div>
               <span className="location-status-badge">Available Worldwide</span>
             </div>
