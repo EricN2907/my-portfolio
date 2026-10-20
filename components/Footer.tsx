@@ -1,5 +1,7 @@
 "use client";
 
+import Signature from "./Signature";
+
 export default function Footer() {
   return (
     <footer className="footer-new">
@@ -10,6 +12,9 @@ export default function Footer() {
             <p className="footer-tagline">
               Xây dựng kiến trúc hệ thống vững chắc, hiệu suất tối đa và mở rộng linh hoạt cho tương lai.
             </p>
+            <div className="footer-signature-container">
+              <Signature variant="compact" />
+            </div>
           </div>
 
           <div className="footer-contact-items">

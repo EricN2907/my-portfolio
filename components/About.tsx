@@ -1,6 +1,7 @@
 "use client";
 
 import TiltCard from "./TiltCard";
+import Signature from "./Signature";
 
 export default function About() {
   return (
@@ -73,7 +74,9 @@ export default function About() {
               <p className="bio-text">
                 &quot;Cuộc sống không phải lúc nào cũng màu hồng, muốn thấy cầu vồng phải chấp nhận những cơn mưa.&quot;
               </p>
-              <span className="quote-author">— Nguyễn Hoàng Nam</span>
+              <div className="quote-signature-wrapper">
+                <Signature variant="full" />
+              </div>
             </div>
           </TiltCard>
 
