@@ -11,49 +11,64 @@ interface SignatureProps {
 }
 
 export default function Signature({
-  name = "Nguyen Hoang Nam",
+  name = "EricNem",
   className = "",
   allowCustomDraw = true,
 }: SignatureProps) {
+  // Mode: "font" (May-WinD font), "paper" (extracted paper scan), "custom" (canvas drawn)
+  const [sigMode, setSigMode] = useState<"font" | "paper" | "custom">("font");
+  const [displayName, setDisplayName] = useState(name);
   const [customSig, setCustomSig] = useState<string | null>(null);
   const [isPadOpen, setIsPadOpen] = useState(false);
-  const [useRealPhotoSig, setUseRealPhotoSig] = useState(true);
 
   useEffect(() => {
-    const saved = localStorage.getItem("user_custom_signature");
-    if (saved) {
-      setCustomSig(saved);
-      setUseRealPhotoSig(false);
+    // Check if user previously chose a custom drawing or mode
+    const savedCustom = localStorage.getItem("user_custom_signature");
+    if (savedCustom) {
+      setCustomSig(savedCustom);
+    }
+
+    const savedMode = localStorage.getItem("user_sig_mode") as "font" | "paper" | "custom" | null;
+    if (savedMode === "paper") {
+      setSigMode("paper");
+    } else if (savedMode === "custom" && savedCustom) {
+      setSigMode("custom");
+    } else {
+      // Default is always the authentic May-WinD font
+      setSigMode("font");
     }
   }, []);
 
-  const handleSaveSignature = (dataUrl: string) => {
-    setCustomSig(dataUrl);
-    setUseRealPhotoSig(false);
-    localStorage.setItem("user_custom_signature", dataUrl);
+  const handleSelectMode = (mode: "font" | "paper" | "custom") => {
+    setSigMode(mode);
+    localStorage.setItem("user_sig_mode", mode);
   };
 
-  const handleResetToRealSig = () => {
-    setCustomSig(null);
-    setUseRealPhotoSig(true);
-    localStorage.removeItem("user_custom_signature");
+  const handleSaveCustomSignature = (dataUrl: string) => {
+    setCustomSig(dataUrl);
+    setSigMode("custom");
+    localStorage.setItem("user_custom_signature", dataUrl);
+    localStorage.setItem("user_sig_mode", "custom");
+  };
+
+  const toggleFontName = () => {
+    setDisplayName((prev) => (prev === "EricNem" ? "Nguyen Hoang Nam" : "EricNem"));
   };
 
   return (
     <div className={`clean-signature-container ${className}`}>
-      {customSig ? (
-        /* User drawn on canvas */
-        <div className="custom-drawn-sig-box">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={customSig}
-            alt="Handwritten Signature"
-            className="real-handwritten-img"
-          />
+      {/* 1. FONT DISPLAY (Authentic May-WinD Thesignature Font) */}
+      {sigMode === "font" && (
+        <div className="signature-font-display" title={`Chữ ký font May-WinD: ${displayName}`}>
+          <span className="signature-script-maywind">
+            {displayName}
+          </span>
         </div>
-      ) : useRealPhotoSig ? (
-        /* The Real Official Signature extracted from paper */
-        <div className="real-signature-wrapper" title="Official Signature: Nguyen Hoang Nam">
+      )}
+
+      {/* 2. PAPER SIGNATURE (Left circle removed, authentic paper stroke) */}
+      {sigMode === "paper" && (
+        <div className="real-signature-wrapper" title="Chữ ký giấy gốc: EricNem (Nguyễn Hoàng Nam)">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/signature_nam_blue.png"
@@ -67,39 +82,68 @@ export default function Signature({
             className="real-handwritten-img sig-dark"
           />
         </div>
-      ) : (
-        /* Thesignature Font Fallback */
-        <div className="signature-font-display">
-          <span className="signature-script-maywind" title={name}>
-            {name}
-          </span>
+      )}
+
+      {/* 3. CUSTOM CANVAS DRAWN SIGNATURE */}
+      {sigMode === "custom" && customSig && (
+        <div className="custom-drawn-sig-box" title="Chữ ký tự vẽ trên bảng">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={customSig}
+            alt="Chữ ký tự vẽ"
+            className="real-handwritten-img custom-drawn-img"
+          />
         </div>
       )}
 
-      {/* Signature tool options */}
+      {/* Interactive Switcher Options */}
       {allowCustomDraw && (
         <div className="signature-tool-actions">
+          {/* Button: Font Thesignature from May-WinD */}
           <button
             type="button"
-            className="signature-custom-btn"
-            onClick={() => setIsPadOpen(true)}
-            title="Mở bảng vẽ tự ký nét khác"
+            className={`signature-pill-btn ${sigMode === "font" ? "active" : ""}`}
+            onClick={() => handleSelectMode("font")}
+            title="Dùng font Thesignature chuẩn từ May-WinD"
           >
-            <i className="fa-solid fa-pen"></i>
-            <span>Vẽ lại chữ ký</span>
+            <i className="fa-solid fa-wand-magic-sparkles"></i>
+            <span>Font May-WinD ({displayName})</span>
           </button>
 
-          {customSig && (
+          {/* Toggle between EricNem and Nguyen Hoang Nam */}
+          {sigMode === "font" && (
             <button
               type="button"
-              className="signature-reset-btn"
-              onClick={handleResetToRealSig}
-              title="Dùng lại chữ ký giấy gốc của bạn"
+              className="signature-pill-sub-btn"
+              onClick={toggleFontName}
+              title="Đổi chữ hiển thị giữa EricNem và Nguyen Hoang Nam"
             >
-              <i className="fa-solid fa-rotate-left"></i>
-              <span>Dùng chữ ký giấy gốc</span>
+              <i className="fa-solid fa-arrows-rotate"></i>
+              <span>{displayName === "EricNem" ? "Hiện Họ Tên" : "Hiện EricNem"}</span>
             </button>
           )}
+
+          {/* Button: Scanned Paper Signature */}
+          <button
+            type="button"
+            className={`signature-pill-btn ${sigMode === "paper" ? "active" : ""}`}
+            onClick={() => handleSelectMode("paper")}
+            title="Dùng nét ký giấy gốc (đã bỏ vòng tròn bên trái)"
+          >
+            <i className="fa-solid fa-signature"></i>
+            <span>Nét ký giấy gốc</span>
+          </button>
+
+          {/* Button: Canvas Pad */}
+          <button
+            type="button"
+            className={`signature-pill-btn ${sigMode === "custom" ? "active" : ""}`}
+            onClick={() => setIsPadOpen(true)}
+            title="Mở bảng vẽ tự ký nét tay mới"
+          >
+            <i className="fa-solid fa-pen-nib"></i>
+            <span>{customSig ? "Vẽ lại nét mới" : "Tự vẽ chữ ký"}</span>
+          </button>
         </div>
       )}
 
@@ -107,7 +151,7 @@ export default function Signature({
       <SignaturePad
         isOpen={isPadOpen}
         onClose={() => setIsPadOpen(false)}
-        onSave={handleSaveSignature}
+        onSave={handleSaveCustomSignature}
       />
     </div>
   );

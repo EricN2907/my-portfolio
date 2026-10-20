@@ -75,7 +75,7 @@ export default function About() {
                 &quot;Cuộc sống không phải lúc nào cũng màu hồng, muốn thấy cầu vồng phải chấp nhận những cơn mưa.&quot;
               </p>
               <div className="quote-signature-wrapper">
-                <Signature />
+                <Signature name="EricNem" />
               </div>
             </div>
           </TiltCard>

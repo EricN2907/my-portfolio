@@ -9,10 +9,15 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const currentTheme = localStorage.getItem("theme") || "light";
+    // Default to dark mode if not yet set in localStorage (per user request)
+    const savedTheme = localStorage.getItem("theme");
+    const currentTheme = savedTheme ? savedTheme : "dark";
     if (currentTheme === "dark") {
       document.body.setAttribute("data-theme", "dark");
       setTheme("dark");
+    } else {
+      document.body.removeAttribute("data-theme");
+      setTheme("light");
     }
 
     const handleScroll = () => {

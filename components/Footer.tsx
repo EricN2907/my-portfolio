@@ -13,7 +13,7 @@ export default function Footer() {
               Xây dựng kiến trúc hệ thống vững chắc, hiệu suất tối đa và mở rộng linh hoạt cho tương lai.
             </p>
             <div className="footer-signature-container">
-              <Signature allowCustomDraw={false} />
+              <Signature name="EricNem" allowCustomDraw={false} />
             </div>
           </div>
 
