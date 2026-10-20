@@ -80,6 +80,13 @@ export default function BackgroundBlob() {
         ))}
       </div>
 
+      {/* Dynamic Shooting Stars in Night Mode */}
+      <div className="shooting-stars-box" aria-hidden="true">
+        <div className="shooting-star star-1" />
+        <div className="shooting-star star-2" />
+        <div className="shooting-star star-3" />
+      </div>
+
       <div
         className="blob-glow"
         ref={blobRef}

@@ -3196,6 +3196,73 @@ body {
   100% { opacity: 0.3; transform: scale(0.7); }
 }
 
+
+/* Dynamic Shooting Stars */
+.shooting-stars-box {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+[data-theme="dark"] .shooting-stars-box {
+  opacity: 1;
+}
+
+.shooting-star {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(-45deg, #ffffff, rgba(0, 198, 255, 0.9), transparent);
+  border-radius: 999px;
+  filter: drop-shadow(0 0 6px #00C6FF);
+  animation: shootingStarAnim 7s ease-in-out infinite;
+  opacity: 0;
+}
+
+.star-1 {
+  top: 12%;
+  right: 22%;
+  width: 130px;
+  animation-delay: 1.5s;
+}
+
+.star-2 {
+  top: 28%;
+  right: 12%;
+  width: 170px;
+  animation-delay: 5s;
+}
+
+.star-3 {
+  top: 6%;
+  right: 48%;
+  width: 100px;
+  animation-delay: 8.5s;
+}
+
+@keyframes shootingStarAnim {
+  0% {
+    transform: translateX(0) translateY(0) rotate(-35deg);
+    opacity: 0;
+  }
+  2% {
+    opacity: 1;
+  }
+  14% {
+    transform: translateX(-350px) translateY(240px) rotate(-35deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-350px) translateY(240px) rotate(-35deg);
+    opacity: 0;
+  }
+}
+
 /* === REAL HANDWRITTEN SIGNATURE STYLES === */
 .real-signature-wrapper {
   display: inline-block;
