@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="footer-container">
         <div className="footer-left">
           <div className="footer-brand">
-            <span className="logo">EricN</span>
+            <span className="logo">EricNem</span>
             <p className="footer-tagline">
               Xây dựng kiến trúc hệ thống vững chắc, hiệu suất tối đa và mở rộng linh hoạt cho tương lai.
             </p>
@@ -75,7 +75,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} Nguyen Hoang Nam (EricN). All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Nguyen Hoang Nam (EricNem). All rights reserved.</p>
         <p className="footer-tech-credit">
           Powered by <strong>Next.js 14 App Router</strong> &bull; TypeScript &bull; Custom Animations
         </p>

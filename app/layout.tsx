@@ -9,8 +9,8 @@ const theSignature = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "EricN - Backend Developer",
-  description: "Portfolio of Nguyen Hoang Nam - Backend Developer",
+  title: "EricNem - Backend Developer",
+  description: "Portfolio of Nguyen Hoang Nam (EricNem) - Backend Developer",
 };
 
 export default function RootLayout({
