@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import SocialHub from "@/components/SocialHub";
 import BackgroundBlob from "@/components/BackgroundBlob";
 import Stats from "@/components/Stats";
 import About from "@/components/About";
@@ -21,6 +22,7 @@ export default function Home() {
 
       <Navbar />
       <Hero />
+      <SocialHub />
       <Stats />
       <About />
       <Services />

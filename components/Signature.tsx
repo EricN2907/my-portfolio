@@ -4,11 +4,13 @@ import { useState } from "react";
 
 interface SignatureProps {
   variant?: "full" | "compact";
+  name?: string;
   className?: string;
 }
 
 export default function Signature({
   variant = "full",
+  name = "Nguyen Hoang Nam",
   className = "",
 }: SignatureProps) {
   const [isHovered, setIsHovered] = useState(false);
@@ -25,8 +27,9 @@ export default function Signature({
         </div>
 
         <div className="signature-text-container">
-          <span className="signature-script">
-            Nguyen Hoang Nam
+          {/* Animated signature using Thesignature font + clip-path stroke reveal */}
+          <span className="signature-script-animated" title="Real-time handwritten signature">
+            {name}
           </span>
 
           {/* SVG Animated Flourish Underline */}

@@ -2566,3 +2566,260 @@ body {
 .weather-accent-icon {
   font-size: 0.85rem;
 }
+
+
+/* ========================================================
+   MAY-WIND INSPIRATIONS: THESIGNATURE FONT & SOCIAL HUB PILLS
+   ======================================================== */
+
+@font-face {
+  font-family: 'Thesignature';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/Thesignature.woff') format('woff'),
+       url('/fonts/Thesignature.ttf') format('truetype'),
+       url('/fonts/Thesignature.otf') format('opentype');
+  font-display: swap;
+}
+
+/* === SIGNATURE ANIMATION FROM MAY-WIND === */
+.signature-script-animated {
+  font-family: 'Thesignature', cursive !important;
+  font-size: clamp(2.8rem, 5.5vw, 4.2rem);
+  font-weight: 400 !important;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  display: inline-block;
+  color: #0072FF;
+  animation: signatureLoop 7.2s ease-in-out infinite !important;
+  will-change: clip-path, opacity;
+  clip-path: inset(0 100% 0 0);
+  -webkit-clip-path: inset(0 100% 0 0);
+  padding: 10px 15px;
+}
+
+[data-theme="dark"] .signature-script-animated {
+  color: #00C6FF !important;
+}
+
+/* Khi rê chuột vào, giữ nguyên chữ ký rõ ràng và phát sáng rực rỡ */
+.signature-block:hover .signature-script-animated {
+  animation-play-state: paused;
+  clip-path: inset(-30px -40px -30px -30px) !important;
+  -webkit-clip-path: inset(-30px -40px -30px -30px) !important;
+  opacity: 1 !important;
+  text-shadow: 0 0 15px rgba(0, 198, 255, 0.9), 0 0 25px rgba(0, 114, 255, 0.7);
+}
+
+@keyframes signatureLoop {
+  /* Giai đoạn 1: Hiển thị từng đường nét chữ ký từ trái qua phải (0s -> 2.4s) */
+  0% {
+    clip-path: inset(0 100% 0 0);
+    -webkit-clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    text-shadow: 0 0 4px rgba(0, 198, 255, 0.4);
+  }
+  1.5% {
+    clip-path: inset(0 100% 0 0);
+    -webkit-clip-path: inset(0 100% 0 0);
+    opacity: 1;
+    text-shadow: 0 0 4px rgba(0, 198, 255, 0.4);
+  }
+  33.3% {
+    clip-path: inset(-30px -40px -30px -30px);
+    -webkit-clip-path: inset(-30px -40px -30px -30px);
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(0, 198, 255, 0.9);
+  }
+  /* Giai đoạn 2: Phát sáng nhẹ trong 3 giây (2.4s -> 5.4s) */
+  38% {
+    clip-path: inset(-30px -40px -30px -30px);
+    -webkit-clip-path: inset(-30px -40px -30px -30px);
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(0, 198, 255, 0.95), 0 0 16px rgba(0, 114, 255, 0.8), 0 0 24px rgba(212, 0, 255, 0.5);
+  }
+  55% {
+    clip-path: inset(-30px -40px -30px -30px);
+    -webkit-clip-path: inset(-30px -40px -30px -30px);
+    opacity: 1;
+    text-shadow: 0 0 12px rgba(0, 198, 255, 1), 0 0 20px rgba(0, 114, 255, 0.9), 0 0 30px rgba(212, 0, 255, 0.6);
+  }
+  72% {
+    clip-path: inset(-30px -40px -30px -30px);
+    -webkit-clip-path: inset(-30px -40px -30px -30px);
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(0, 198, 255, 0.95), 0 0 16px rgba(0, 114, 255, 0.8), 0 0 24px rgba(212, 0, 255, 0.5);
+  }
+  /* Giai đoạn 3: Mờ dần đi (5.4s -> 6.2s) */
+  75% {
+    clip-path: inset(-30px -40px -30px -30px);
+    -webkit-clip-path: inset(-30px -40px -30px -30px);
+    opacity: 1;
+  }
+  86% {
+    clip-path: inset(-30px -40px -30px -30px);
+    -webkit-clip-path: inset(-30px -40px -30px -30px);
+    opacity: 0;
+    text-shadow: 0 0 0 transparent;
+  }
+  /* Giai đoạn 4: Biến mất 1s rồi lặp lại chu kỳ mới */
+  86.1% {
+    clip-path: inset(0 100% 0 0);
+    -webkit-clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  100% {
+    clip-path: inset(0 100% 0 0);
+    -webkit-clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+}
+
+/* === SOCIAL HUB PILLS (MAY-WIND INSPIRATION) === */
+.social-hub-section {
+  width: 90%;
+  max-width: 1100px;
+  margin: 15px auto 40px;
+}
+
+.social-hub-container {
+  padding: 24px 28px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] .social-hub-container {
+  background: rgba(24, 24, 28, 0.7);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.social-hub-header {
+  margin-bottom: 18px;
+}
+
+.social-hub-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #0072FF;
+  text-transform: uppercase;
+}
+
+[data-theme="dark"] .social-hub-tag {
+  color: #00C6FF;
+}
+
+.social-hub-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 4px;
+}
+
+.social-hub-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.social-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  text-decoration: none;
+  color: var(--text-main);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="dark"] .social-pill {
+  background: rgba(26, 26, 30, 0.85);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.social-pill:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 25px rgba(0, 114, 255, 0.2);
+}
+
+.social-pill-icon {
+  font-size: 1.15rem;
+}
+
+.social-pill-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.social-pill-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.social-pill-handle {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.social-pill-arrow {
+  font-size: 0.7rem;
+  opacity: 0.4;
+  margin-left: 2px;
+  transition: transform 0.25s ease;
+}
+
+.social-pill:hover .social-pill-arrow {
+  transform: translate(2px, -2px);
+  opacity: 0.9;
+}
+
+/* Custom Platform Hover Accents */
+.social-pill.github-pill:hover {
+  background: #24292e;
+  border-color: #24292e;
+  color: #fff;
+}
+.social-pill.github-pill:hover .social-pill-handle { color: #ccc; }
+
+.social-pill.facebook-pill:hover {
+  background: #1877f2;
+  border-color: #1877f2;
+  color: #fff;
+}
+.social-pill.facebook-pill:hover .social-pill-handle { color: #e4e6eb; }
+
+.social-pill.email-pill:hover {
+  background: #ea4335;
+  border-color: #ea4335;
+  color: #fff;
+}
+.social-pill.email-pill:hover .social-pill-handle { color: #fce8e6; }
+
+.social-pill.phone-pill:hover {
+  background: #0068ff;
+  border-color: #0068ff;
+  color: #fff;
+}
+.social-pill.phone-pill:hover .social-pill-handle { color: #e1f0ff; }
+
+.social-pill.resume-pill:hover {
+  background: var(--gradient-btn);
+  border-color: transparent;
+  color: #fff;
+}
+.social-pill.resume-pill:hover .social-pill-handle { color: #f0f0ff; }
