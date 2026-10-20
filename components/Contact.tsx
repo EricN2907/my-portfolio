@@ -40,11 +40,11 @@ export default function Contact() {
               <button
                 className="copy-btn"
                 onClick={copyEmail}
-                title="Sao chép địa chỉ email"
+                title="Copy email address"
                 type="button"
               >
                 <i className={`fa-solid ${copied ? "fa-check" : "fa-copy"}`}></i>
-                <span>{copied ? "Đã copy!" : "Copy"}</span>
+                <span>{copied ? "Copied!" : "Copy"}</span>
               </button>
             </div>
           </TiltCard>
@@ -90,17 +90,17 @@ export default function Contact() {
             encType="text/plain"
           >
             <div className="input-group">
-              <label htmlFor="name-input">Họ &amp; Tên</label>
+              <label htmlFor="name-input">Your Name</label>
               <input
                 id="name-input"
                 type="text"
                 name="Name"
-                placeholder="Nhập tên của bạn"
+                placeholder="Enter your name"
                 required
               />
             </div>
             <div className="input-group">
-              <label htmlFor="email-input">Địa Chỉ Email</label>
+              <label htmlFor="email-input">Email Address</label>
               <input
                 id="email-input"
                 type="email"
@@ -110,17 +110,17 @@ export default function Contact() {
               />
             </div>
             <div className="input-group">
-              <label htmlFor="msg-input">Nội Dung Tin Nhắn</label>
+              <label htmlFor="msg-input">Your Message</label>
               <textarea
                 id="msg-input"
                 name="Message"
                 rows={5}
-                placeholder="Chia sẻ về dự án hoặc câu hỏi của bạn..."
+                placeholder="Tell me about your project, idea or inquiry..."
                 required
               ></textarea>
             </div>
             <button type="submit" className="submit-btn form-submit-btn">
-              <span>Gửi Lời Nhắn</span>
+              <span>Send Message</span>
               <i className="fa-solid fa-paper-plane"></i>
             </button>
           </form>

@@ -66,30 +66,30 @@ export default function WeatherWidget({
       const code = current.weather_code;
       const isDay = current.is_day === 1;
 
-      // Map WMO Weather Codes to Vietnamese description and FontAwesome Icon
-      let condition = "Trời quang đãng";
+      // Map WMO Weather Codes to clean conditions and FontAwesome Icon
+      let condition = "Clear Sky";
       let icon = isDay ? "fa-solid fa-sun" : "fa-solid fa-moon";
 
       if (code === 1 || code === 2) {
-        condition = "Có mây nhẹ";
+        condition = "Partly Cloudy";
         icon = isDay ? "fa-solid fa-cloud-sun" : "fa-solid fa-cloud-moon";
       } else if (code === 3) {
-        condition = "Nhiều mây";
+        condition = "Overcast";
         icon = "fa-solid fa-cloud";
       } else if (code === 45 || code === 48) {
-        condition = "Sương mù";
+        condition = "Foggy";
         icon = "fa-solid fa-smog";
       } else if (code >= 51 && code <= 55) {
-        condition = "Mưa phùn nhẹ";
+        condition = "Light Drizzle";
         icon = "fa-solid fa-cloud-rain";
       } else if (code >= 61 && code <= 65) {
-        condition = "Mưa rào";
+        condition = "Rain Showers";
         icon = "fa-solid fa-cloud-showers-heavy";
       } else if (code >= 80 && code <= 82) {
-        condition = "Mưa rào rải rác";
+        condition = "Scattered Showers";
         icon = "fa-solid fa-cloud-sun-rain";
       } else if (code >= 95) {
-        condition = "Dông, sấm chớp";
+        condition = "Thunderstorm";
         icon = "fa-solid fa-bolt-lightning";
       }
 
@@ -121,7 +121,7 @@ export default function WeatherWidget({
     return (
       <div className={`weather-widget-loading ${className}`}>
         <i className="fa-solid fa-circle-notch fa-spin"></i>
-        <span>Đang nạp thời tiết TP.HCM...</span>
+        <span>Loading weather...</span>
       </div>
     );
   }
@@ -148,12 +148,12 @@ export default function WeatherWidget({
         type="button"
         className="weather-pill-btn"
         onClick={() => setIsExpanded(!isExpanded)}
-        title="Nhấp để xem chi tiết thời tiết thời gian thực"
+        title="Click to view live weather details"
       >
         <span className="weather-location-pin">
           <i className="fa-solid fa-location-dot"></i>
         </span>
-        <span className="weather-city">TP. Hồ Chí Minh</span>
+        <span className="weather-city">Ho Chi Minh City</span>
         <span className="weather-sep">&bull;</span>
         <i className={`${weather.icon} weather-icon-pulse`}></i>
         <span className="weather-temp">{weather.temperature}&deg;C</span>
@@ -179,7 +179,7 @@ export default function WeatherWidget({
             <button
               className="weather-refresh-btn"
               onClick={fetchWeather}
-              title="Làm mới dữ liệu"
+              title="Refresh live data"
             >
               <i className={`fa-solid fa-rotate ${loading ? "fa-spin" : ""}`}></i>
             </button>
@@ -192,7 +192,7 @@ export default function WeatherWidget({
               <span className="temp-unit">&deg;C</span>
             </div>
             <div className="weather-apparent">
-              Cảm giác như: <strong>{weather.apparentTemperature}&deg;C</strong>
+              Feels like: <strong>{weather.apparentTemperature}&deg;C</strong>
             </div>
           </div>
 
@@ -200,28 +200,28 @@ export default function WeatherWidget({
             <div className="weather-metric-item">
               <i className="fa-solid fa-droplet"></i>
               <div className="metric-info">
-                <span className="metric-label">Độ ẩm</span>
+                <span className="metric-label">Humidity</span>
                 <span className="metric-val">{weather.humidity}%</span>
               </div>
             </div>
             <div className="weather-metric-item">
               <i className="fa-solid fa-wind"></i>
               <div className="metric-info">
-                <span className="metric-label">Gió</span>
+                <span className="metric-label">Wind</span>
                 <span className="metric-val">{weather.windSpeed} km/h</span>
               </div>
             </div>
             <div className="weather-metric-item">
               <i className="fa-regular fa-clock"></i>
               <div className="metric-info">
-                <span className="metric-label">Giờ thực tế</span>
+                <span className="metric-label">Local Time</span>
                 <span className="metric-val">{currentTime}</span>
               </div>
             </div>
             <div className="weather-metric-item">
               <i className="fa-solid fa-satellite-dish"></i>
               <div className="metric-info">
-                <span className="metric-label">Nguồn API</span>
+                <span className="metric-label">API Feed</span>
                 <span className="metric-val">Open-Meteo</span>
               </div>
             </div>
@@ -231,7 +231,7 @@ export default function WeatherWidget({
             <span className="live-badge">
               <span className="live-dot"></span> LIVE API
             </span>
-            <span>Cập nhật liên tục từ trạm khí tượng vệ tinh</span>
+            <span>Real-time meteorological satellite telemetry</span>
           </div>
         </div>
       )}

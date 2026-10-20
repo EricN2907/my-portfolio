@@ -26,10 +26,10 @@ export default function About() {
 
         <div className="action-buttons">
           <a href="/Nguyen-Hoang-Nam-CV.pdf" target="_blank" className="btn btn-outline cv-btn">
-            <i className="fa-solid fa-file-arrow-down"></i> Tải CV / Resume
+            <i className="fa-solid fa-file-arrow-down"></i> Download CV
           </a>
           <a href="#contact" className="btn btn-outline contact-quick-btn">
-            <i className="fa-solid fa-envelope"></i> Liên Hệ
+            <i className="fa-solid fa-envelope"></i> Contact Me
           </a>
         </div>
 

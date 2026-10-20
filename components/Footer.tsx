@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="footer-container">
         <div className="footer-left">
           <div className="footer-brand">
-            <span className="logo">EricN<span className="logo-accent">.dev</span></span>
+            <span className="logo">EricN</span>
             <p className="footer-tagline">
               Xây dựng kiến trúc hệ thống vững chắc, hiệu suất tối đa và mở rộng linh hoạt cho tương lai.
             </p>
