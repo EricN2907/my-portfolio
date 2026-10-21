@@ -35,7 +35,7 @@ export default function Contact() {
               </div>
               <div className="info-content">
                 <h4>Email Address</h4>
-                <p>nemnguyenhoang2907@gmail.com</p>
+                <p className="email-text">nemnguyenhoang2907@gmail.com</p>
               </div>
               <button
                 className="copy-btn"
@@ -56,7 +56,7 @@ export default function Contact() {
               </div>
               <div className="info-content">
                 <h4>Phone Number</h4>
-                <p>0825 561 297</p>
+                <p className="phone-text">0825 561 297</p>
               </div>
               <a href="tel:0825561297" className="call-link-btn" title="Gọi điện">
                 <i className="fa-solid fa-arrow-up-right-from-square"></i>
@@ -65,13 +65,13 @@ export default function Contact() {
           </TiltCard>
 
           <TiltCard className="contact-info-card-wrapper" maxTilt={6}>
-            <div className="contact-info-card">
+            <div className="contact-info-card location-card">
               <div className="info-icon">
                 <i className="fa-solid fa-location-dot"></i>
               </div>
               <div className="info-content">
                 <h4>Location</h4>
-                <p>Ho Chi Minh City, Vietnam</p>
+                <p className="location-text">Ho Chi Minh City, Vietnam</p>
                 <div style={{ marginTop: "6px" }}>
                   <WeatherWidget variant="compact" />
                 </div>

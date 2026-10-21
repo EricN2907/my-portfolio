@@ -4,51 +4,179 @@ import { useEffect, useRef } from "react";
 
 export default function BackgroundBlob() {
   const blobRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    // 1. Mouse pointer tracker
     const handlePointerMove = (e: PointerEvent) => {
       if (blobRef.current) {
         blobRef.current.style.left = `${e.clientX}px`;
         blobRef.current.style.top = `${e.clientY}px`;
       }
     };
-
     window.addEventListener("pointermove", handlePointerMove);
-    return () => window.removeEventListener("pointermove", handlePointerMove);
+
+    // 2. Dynamic Dark Mode Celestial Starfield & Shooting Stars Canvas
+    const canvas = canvasRef.current;
+    let animId: number;
+
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      let w = (canvas.width = window.innerWidth);
+      let h = (canvas.height = window.innerHeight);
+
+      const handleResize = () => {
+        if (!canvas) return;
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      };
+      window.addEventListener("resize", handleResize);
+
+      // 90 Twinkling stars
+      const stars = Array.from({ length: 90 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * (h * 0.9),
+        radius: Math.random() * 1.6 + 0.6,
+        baseAlpha: Math.random() * 0.6 + 0.35,
+        twinkleSpeed: Math.random() * 0.035 + 0.015,
+        phase: Math.random() * Math.PI * 2,
+      }));
+
+      // 20 Floating night firefly particles
+      const fireflies = Array.from({ length: 20 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: -Math.random() * 0.5 - 0.2,
+        size: Math.random() * 2 + 1.2,
+        alpha: Math.random() * 0.5 + 0.3,
+        pulseSpeed: Math.random() * 0.03 + 0.015,
+        pulsePhase: Math.random() * Math.PI * 2,
+      }));
+
+      // Shooting stars (Meteors)
+      const meteors: Array<{
+        x: number;
+        y: number;
+        length: number;
+        speed: number;
+        angle: number;
+        alpha: number;
+      }> = [];
+
+      let lastMeteorTime = Date.now();
+
+      const render = () => {
+        const isDark = document.body.getAttribute("data-theme") === "dark";
+        if (ctx && isDark) {
+          ctx.clearRect(0, 0, w, h);
+
+          // Draw Twinkling Stars
+          for (const star of stars) {
+            star.phase += star.twinkleSpeed;
+            const alpha = Math.max(0.12, star.baseAlpha + Math.sin(star.phase) * 0.35);
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = "rgba(0, 198, 255, 0.85)";
+            ctx.fill();
+          }
+
+          // Draw Floating Night Fireflies / Stardust
+          for (const f of fireflies) {
+            f.x += f.vx;
+            f.y += f.vy;
+            f.pulsePhase += f.pulseSpeed;
+            if (f.y < -20) f.y = h + 10;
+            if (f.x < -20) f.x = w + 10;
+            if (f.x > w + 20) f.x = -10;
+
+            const alpha = Math.max(0.15, f.alpha + Math.sin(f.pulsePhase) * 0.25);
+            ctx.beginPath();
+            ctx.arc(f.x, f.y, f.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(0, 225, 255, ${alpha})`;
+            ctx.shadowBlur = 14;
+            ctx.shadowColor = "#00C6FF";
+            ctx.fill();
+          }
+
+          // Trigger occasional Shooting Stars (every 2.5 - 3.5 seconds)
+          const now = Date.now();
+          if (now - lastMeteorTime > 2600 && Math.random() < 0.04) {
+            meteors.push({
+              x: Math.random() * (w * 0.85) + w * 0.1,
+              y: Math.random() * (h * 0.35),
+              length: Math.random() * 140 + 90,
+              speed: Math.random() * 9 + 14,
+              angle: Math.PI / 4 + (Math.random() - 0.5) * 0.2,
+              alpha: 1,
+            });
+            lastMeteorTime = now;
+          }
+
+          // Render Meteors
+          for (let i = meteors.length - 1; i >= 0; i--) {
+            const m = meteors[i];
+            m.x += Math.cos(m.angle) * m.speed;
+            m.y += Math.sin(m.angle) * m.speed;
+            m.alpha -= 0.016;
+
+            if (m.alpha <= 0 || m.x > w || m.y > h) {
+              meteors.splice(i, 1);
+              continue;
+            }
+
+            const tailX = m.x - Math.cos(m.angle) * m.length;
+            const tailY = m.y - Math.sin(m.angle) * m.length;
+
+            const grad = ctx.createLinearGradient(m.x, m.y, tailX, tailY);
+            grad.addColorStop(0, `rgba(255, 255, 255, ${m.alpha})`);
+            grad.addColorStop(0.25, `rgba(0, 198, 255, ${m.alpha * 0.85})`);
+            grad.addColorStop(1, "transparent");
+
+            ctx.beginPath();
+            ctx.moveTo(m.x, m.y);
+            ctx.lineTo(tailX, tailY);
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = 2.6;
+            ctx.shadowBlur = 16;
+            ctx.shadowColor = "#00C6FF";
+            ctx.stroke();
+          }
+        } else if (ctx) {
+          ctx.clearRect(0, 0, w, h);
+        }
+
+        animId = requestAnimationFrame(render);
+      };
+
+      animId = requestAnimationFrame(render);
+
+      return () => {
+        window.removeEventListener("pointermove", handlePointerMove);
+        window.removeEventListener("resize", handleResize);
+        cancelAnimationFrame(animId);
+      };
+    }
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+    };
   }, []);
 
   return (
     <>
       {/* ========================================================
-          1. DARK MODE: CELESTIAL MOON & NIGHT SKY (FROM MAY-WIND)
+          1. DARK MODE: CELESTIAL MOON & INTERACTIVE STARFIELD
           ======================================================== */}
-      {/* Celestial Moon identical to May-WinD: Crescent body with glowing atmospheric halo */}
+      {/* High-Performance Canvas for Dynamic Starfield, Meteors & Night Fireflies */}
+      <canvas ref={canvasRef} className="sky-stars-canvas" aria-hidden="true" />
+
+      {/* Celestial Moon: Crescent body with glowing atmospheric halo */}
       <div id="skyMoonElement" className="sky-moon-element" aria-hidden="true">
         <div className="moon-body"></div>
         <div className="moon-glow"></div>
-      </div>
-
-      {/* Atmospheric Night Stars */}
-      <div className="sky-stars-container" aria-hidden="true">
-        {[...Array(28)].map((_, i) => (
-          <div
-            key={i}
-            className="twinkle-star"
-            style={{
-              top: `${(i * 17 + 3) % 95}%`,
-              left: `${(i * 23 + 7) % 96}%`,
-              animationDelay: `${(i * 0.35) % 3.5}s`,
-              transform: `scale(${0.6 + ((i * 3) % 5) * 0.15})`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Dynamic Shooting Stars in Night Mode */}
-      <div className="shooting-stars-box" aria-hidden="true">
-        <div className="shooting-star star-1" />
-        <div className="shooting-star star-2" />
-        <div className="shooting-star star-3" />
       </div>
 
       {/* Dynamic Cosmic Aurora Borealis Glow Waves in Dark Mode */}
@@ -64,11 +192,11 @@ export default function BackgroundBlob() {
       </div>
 
       {/* ========================================================
-          2. LIGHT MODE: GOLDEN AUTUMN FALLING LEAVES & TREES
+          2. LIGHT MODE: GOLDEN AUTUMN FALLING LEAVES & 4 CORNER TREES
           ======================================================== */}
-      {/* Artistic Autumn Botanical Trees & Foliage Silhouette Branches */}
+      {/* Artistic Autumn Botanical Trees & Foliage Silhouette Branches (All 4 Corners) */}
       <div className="autumn-trees-container" aria-hidden="true">
-        {/* Top-Right Graceful Tree Branch */}
+        {/* Top-Right Tree Branch */}
         <div className="autumn-tree-branch branch-top-right">
           <svg viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -103,7 +231,7 @@ export default function BackgroundBlob() {
           </svg>
         </div>
 
-        {/* Top-Left Gentle Tree Branch */}
+        {/* Top-Left Tree Branch */}
         <div className="autumn-tree-branch branch-top-left">
           <svg viewBox="0 0 320 200" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -125,7 +253,64 @@ export default function BackgroundBlob() {
             <circle cx="275" cy="165" r="14" fill="rgba(217, 119, 6, 0.4)" />
           </svg>
         </div>
+
+        {/* Bottom-Left Tree Branch */}
+        <div className="autumn-tree-branch branch-bottom-left">
+          <svg viewBox="0 0 340 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M0 240 C50 200 90 170 140 150 C190 130 230 100 270 40"
+              stroke="rgba(180, 83, 9, 0.4)"
+              strokeWidth="8"
+              strokeLinecap="round"
+            />
+            <path
+              d="M140 150 C170 175 200 195 240 205"
+              stroke="rgba(180, 83, 9, 0.32)"
+              strokeWidth="4.5"
+              strokeLinecap="round"
+            />
+            <path
+              d="M90 170 C100 130 120 100 150 75"
+              stroke="rgba(180, 83, 9, 0.3)"
+              strokeWidth="3.8"
+              strokeLinecap="round"
+            />
+            <circle cx="150" cy="75" r="16" fill="rgba(245, 158, 11, 0.45)" />
+            <circle cx="185" cy="80" r="14" fill="rgba(234, 88, 12, 0.42)" />
+            <circle cx="270" cy="40" r="18" fill="rgba(217, 119, 6, 0.46)" />
+            <circle cx="240" cy="205" r="15" fill="rgba(245, 158, 11, 0.42)" />
+            <circle cx="215" cy="180" r="13" fill="rgba(234, 88, 12, 0.4)" />
+            <circle cx="180" cy="140" r="15" fill="rgba(217, 119, 6, 0.42)" />
+            <circle cx="110" cy="160" r="14" fill="rgba(245, 158, 11, 0.45)" />
+          </svg>
+        </div>
+
+        {/* Bottom-Right Tree Branch */}
+        <div className="autumn-tree-branch branch-bottom-right">
+          <svg viewBox="0 0 350 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M350 240 C300 200 250 170 200 150 C150 130 110 95 70 35"
+              stroke="rgba(180, 83, 9, 0.4)"
+              strokeWidth="8"
+              strokeLinecap="round"
+            />
+            <path
+              d="M200 150 C170 180 140 200 100 210"
+              stroke="rgba(180, 83, 9, 0.32)"
+              strokeWidth="4.5"
+              strokeLinecap="round"
+            />
+            <circle cx="70" cy="35" r="18" fill="rgba(245, 158, 11, 0.45)" />
+            <circle cx="100" cy="50" r="14" fill="rgba(234, 88, 12, 0.42)" />
+            <circle cx="100" cy="210" r="16" fill="rgba(217, 119, 6, 0.42)" />
+            <circle cx="135" cy="185" r="14" fill="rgba(245, 158, 11, 0.45)" />
+            <circle cx="165" cy="140" r="15" fill="rgba(234, 88, 12, 0.4)" />
+            <circle cx="230" cy="165" r="16" fill="rgba(217, 119, 6, 0.45)" />
+          </svg>
+        </div>
       </div>
+
+      {/* Autumn Falling Leaves */}
       <div className="autumn-leaves-container" aria-hidden="true">
         {[...Array(16)].map((_, i) => {
           const leafTypes = ["gold", "maple", "bronze", "amber"];

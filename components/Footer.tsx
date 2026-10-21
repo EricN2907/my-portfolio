@@ -10,13 +10,26 @@ export default function Footer() {
           <div className="footer-brand">
             <span className="brand-logo footer-logo">
               <span className="brand-first">Eric</span>
-              <span className="brand-last">Nem</span>
+              <span className="brand-nem-wrapper" title="Nem">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/signature_nem_blue.png"
+                  alt="Nem"
+                  className="brand-sig-img sig-light"
+                />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/signature_nem_white.png"
+                  alt="Nem"
+                  className="brand-sig-img sig-dark"
+                />
+              </span>
             </span>
             <p className="footer-tagline">
               Xây dựng kiến trúc hệ thống vững chắc, hiệu suất tối đa và mở rộng linh hoạt cho tương lai.
             </p>
             <div className="footer-signature-container">
-              <Signature name="EricNem" allowCustomDraw={false} />
+              <Signature name="EricNem" allowCustomDraw={false} defaultMode="trimmed" />
             </div>
           </div>
 

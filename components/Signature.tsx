@@ -8,15 +8,17 @@ interface SignatureProps {
   className?: string;
   allowCustomDraw?: boolean;
   variant?: string;
+  defaultMode?: "full" | "trimmed" | "font" | "custom";
 }
 
 export default function Signature({
   name = "Nguyen Hoang Nam",
   className = "",
   allowCustomDraw = true,
+  defaultMode = "trimmed",
 }: SignatureProps) {
-  // Modes: "full" (authentic signature from paper photo with monogram), "trimmed" (without circle), "font", "custom"
-  const [sigMode, setSigMode] = useState<"full" | "trimmed" | "font" | "custom">("full");
+  // Modes: "trimmed" (pristine signature from user's crop), "full", "font", "custom"
+  const [sigMode, setSigMode] = useState<"full" | "trimmed" | "font" | "custom">(defaultMode);
   const [customSig, setCustomSig] = useState<string | null>(null);
   const [isPadOpen, setIsPadOpen] = useState(false);
 
@@ -26,18 +28,15 @@ export default function Signature({
       setCustomSig(savedCustom);
     }
 
-    const savedMode = localStorage.getItem("user_sig_mode") as "full" | "trimmed" | "font" | "custom" | "paper" | null;
+    const savedMode = localStorage.getItem("user_sig_mode") as "full" | "trimmed" | "font" | "custom" | null;
     if (savedMode === "custom" && savedCustom) {
       setSigMode("custom");
-    } else if (savedMode === "font") {
-      setSigMode("font");
-    } else if (savedMode === "trimmed") {
-      setSigMode("trimmed");
+    } else if (savedMode) {
+      setSigMode(savedMode);
     } else {
-      // Default is always full authentic handwritten signature
-      setSigMode("full");
+      setSigMode(defaultMode);
     }
-  }, []);
+  }, [defaultMode]);
 
   const handleSelectMode = (mode: "full" | "trimmed" | "font" | "custom") => {
     setSigMode(mode);

@@ -53,7 +53,20 @@ export default function Navbar() {
       <nav className="navbar">
         <Link href="/" className="brand-logo" onClick={closeMenu}>
           <span className="brand-first">Eric</span>
-          <span className="brand-last">Nem</span>
+          <span className="brand-nem-wrapper" title="Nem">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/signature_nem_blue.png"
+              alt="Nem"
+              className="brand-sig-img sig-light"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/signature_nem_white.png"
+              alt="Nem"
+              className="brand-sig-img sig-dark"
+            />
+          </span>
         </Link>
 
         <ul className={`nav-links ${isMenuOpen ? "active" : ""}`}>
