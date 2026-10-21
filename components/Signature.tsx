@@ -23,6 +23,11 @@ export default function Signature({
   const [isPadOpen, setIsPadOpen] = useState(false);
 
   useEffect(() => {
+    if (!allowCustomDraw) {
+      setSigMode(defaultMode);
+      return;
+    }
+
     const savedCustom = localStorage.getItem("user_custom_signature");
     if (savedCustom) {
       setCustomSig(savedCustom);
@@ -36,7 +41,7 @@ export default function Signature({
     } else {
       setSigMode(defaultMode);
     }
-  }, [defaultMode]);
+  }, [allowCustomDraw, defaultMode]);
 
   const handleSelectMode = (mode: "full" | "trimmed" | "font" | "custom") => {
     setSigMode(mode);

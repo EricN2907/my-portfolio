@@ -1887,11 +1887,15 @@ body {
 }
 
 .info-content p.location-text {
+  font-size: clamp(0.86rem, 1.1vw, 1rem) !important;
   white-space: nowrap !important;
+  word-break: normal !important;
 }
 
 .info-content p.email-text {
-  word-break: break-all !important;
+  font-size: clamp(0.84rem, 1.08vw, 0.96rem) !important;
+  white-space: nowrap !important;
+  word-break: normal !important;
 }
 
 .location-status-badge {
