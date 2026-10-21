@@ -7,9 +7,11 @@ export default function BackgroundBlob() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const compactScreen = window.matchMedia("(max-width: 640px)").matches;
     // 1. Mouse pointer tracker
     const handlePointerMove = (e: PointerEvent) => {
-      if (blobRef.current) {
+      if (blobRef.current && !reducedMotion.matches && e.pointerType === "mouse") {
         blobRef.current.style.left = `${e.clientX}px`;
         blobRef.current.style.top = `${e.clientY}px`;
       }
@@ -33,7 +35,7 @@ export default function BackgroundBlob() {
       window.addEventListener("resize", handleResize);
 
       // 90 Twinkling stars
-      const stars = Array.from({ length: 90 }, () => ({
+      const stars = Array.from({ length: compactScreen ? 40 : 90 }, () => ({
         x: Math.random() * w,
         y: Math.random() * (h * 0.9),
         radius: Math.random() * 1.6 + 0.6,
@@ -43,7 +45,7 @@ export default function BackgroundBlob() {
       }));
 
       // 20 Floating night firefly particles
-      const fireflies = Array.from({ length: 20 }, () => ({
+      const fireflies = Array.from({ length: compactScreen ? 6 : 20 }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
         vx: (Math.random() - 0.5) * 0.4,
@@ -73,7 +75,7 @@ export default function BackgroundBlob() {
 
           // Draw Twinkling Stars
           for (const star of stars) {
-            star.phase += star.twinkleSpeed;
+            if (!reducedMotion.matches) star.phase += star.twinkleSpeed;
             const alpha = Math.max(0.12, star.baseAlpha + Math.sin(star.phase) * 0.35);
             ctx.beginPath();
             ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
@@ -84,7 +86,7 @@ export default function BackgroundBlob() {
           }
 
           // Draw Floating Night Fireflies / Stardust
-          for (const f of fireflies) {
+          for (const f of reducedMotion.matches ? [] : fireflies) {
             f.x += f.vx;
             f.y += f.vy;
             f.pulsePhase += f.pulseSpeed;
@@ -103,7 +105,7 @@ export default function BackgroundBlob() {
 
           // Trigger occasional Shooting Stars (every 2.5 - 3.5 seconds)
           const now = Date.now();
-          if (now - lastMeteorTime > 2600 && Math.random() < 0.04) {
+          if (!reducedMotion.matches && now - lastMeteorTime > 2600 && Math.random() < 0.04) {
             meteors.push({
               x: Math.random() * (w * 0.85) + w * 0.1,
               y: Math.random() * (h * 0.35),

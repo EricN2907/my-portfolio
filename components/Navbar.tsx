@@ -1,16 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { flushSync } from "react-dom";
 import Link from "next/link";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [theme, setTheme] = useState("light");
   const [isScrolled, setIsScrolled] = useState(false);
+  const themeBusy = useRef(false);
 
   useEffect(() => {
     // Default to dark mode if not yet set in localStorage (per user request)
-    const savedTheme = localStorage.getItem("theme");
+    let savedTheme: string | null = null;
+    try { savedTheme = localStorage.getItem("theme"); } catch { /* Use the default. */ }
     const currentTheme = savedTheme ? savedTheme : "dark";
     if (currentTheme === "dark") {
       document.body.setAttribute("data-theme", "dark");
@@ -28,15 +31,42 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const toggleTheme = () => {
-    if (theme === "light") {
-      document.body.setAttribute("data-theme", "dark");
-      localStorage.setItem("theme", "dark");
-      setTheme("dark");
-    } else {
-      document.body.removeAttribute("data-theme");
-      localStorage.setItem("theme", "light");
-      setTheme("light");
+  const toggleTheme = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (themeBusy.current) return;
+    const nextTheme = theme === "light" ? "dark" : "light";
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    const applyTheme = () => {
+      if (nextTheme === "dark") document.body.setAttribute("data-theme", "dark");
+      else document.body.removeAttribute("data-theme");
+      setTheme(nextTheme);
+      try { localStorage.setItem("theme", nextTheme); } catch { /* Storage can be disabled. */ }
+    };
+    const transitionDocument = document as Document & {
+      startViewTransition?: (update: () => void) => { ready: Promise<void>; finished: Promise<void> };
+    };
+    if (!transitionDocument.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      applyTheme();
+      return;
+    }
+    themeBusy.current = true;
+    document.documentElement.classList.add("theme-transitioning");
+    try {
+      const transition = transitionDocument.startViewTransition(() => flushSync(applyTheme));
+      const finished = transition.finished.catch(() => undefined);
+      try {
+        await transition.ready;
+        await document.documentElement.animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+          { duration: 700, easing: "cubic-bezier(0.22, 1, 0.36, 1)", pseudoElement: "::view-transition-new(root)" },
+        ).finished;
+      } catch { /* The theme still changes if the browser skips the animation. */ }
+      await finished;
+    } finally {
+      document.documentElement.classList.remove("theme-transitioning");
+      themeBusy.current = false;
     }
   };
 
@@ -105,12 +135,16 @@ export default function Navbar() {
         <div className="nav-actions">
           {/* Nút bấm Theme */}
           <button
-            className="theme-toggle-btn"
+            className={`theme-toggle-btn ${theme === "dark" ? "is-dark" : "is-light"}`}
+            type="button"
             onClick={toggleTheme}
-            aria-label="Toggle Theme"
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             title="Đổi giao diện Sáng / Tối"
           >
-            <i className={`fa-solid ${theme === "dark" ? "fa-sun" : "fa-moon"}`}></i>
+            <span className="theme-icon-stage" aria-hidden="true">
+              <i className="fa-solid fa-sun theme-icon theme-icon-sun" />
+              <i className="fa-solid fa-moon theme-icon theme-icon-moon" />
+            </span>
           </button>
 
           <a
